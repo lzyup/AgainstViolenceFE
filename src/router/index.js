@@ -46,11 +46,6 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    children: [{
-      path: 'personalcenter',
-      name: 'PersonalCenter',
-      component: () => import('@/views/personalcenter/index'),
-    }]
   },
   {
     path: '/hc', //helping center
@@ -61,6 +56,17 @@ export const constantRoutes = [
       name: 'Helpingcenter',
       component: () => import('@/views/helpingcenter/index'),
       meta: { title: 'HelpingCenter' }
+    }]
+  },
+  {
+    path: '/personalcenter',
+    component: Layout,
+    redirect: '/personalcenter/index',
+    children: [{
+      path: 'index',
+      name: 'PersonalCenter',
+      component: () => import('@/views/personalcenter/index'),
+      meta: { title: 'PersonalCenter' }
     }]
   },
   {
