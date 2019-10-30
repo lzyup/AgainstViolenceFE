@@ -1,79 +1,54 @@
 <template>
   <el-container style="height: 500px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']">
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>导航一</template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="1-1">选项1</el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-submenu index="2">
-          <template slot="title"><i class="el-icon-menu"></i>导航二</template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="2-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-submenu index="3">
-          <template slot="title"><i class="el-icon-setting"></i>导航三</template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="3-1">选项1</el-menu-item>
-            <el-menu-item index="3-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="3-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="3-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="3-4-1">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
+      <el-menu router :default-active="$route.path">
+        <el-menu-item>
+          <template slot="title"><i class="el-icon-user-solid"></i>我的主页</template>
+        </el-menu-item>
+        <el-menu-item index="/hc">
+          <template slot="title"><i class="el-icon-chat-round"></i>我的发帖</template>
+        </el-menu-item>
+        <el-menu-item>
+          <template slot="title"><i class="el-icon-chat-dot-round"></i>我的评论</template>
+        </el-menu-item>
+        <el-menu-item>
+          <template slot="title"><i class="el-icon-success"></i>评论我的</template>
+        </el-menu-item>
+        <el-menu-item>
+          <template slot="title"><i class="el-icon-s-tools"></i>个人设置</template>
+        </el-menu-item>
       </el-menu>
     </el-aside>
+    <el-main>
+      <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+        <el-tab-pane label="基本资料" name="first">
+          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+        </el-tab-pane>
+        <el-tab-pane label="修改头像" name="second">
+        </el-tab-pane>
+        <el-tab-pane label="修改密码" name="third">
+          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="密码" prop="pass">
+              <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+              <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+              <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="邮箱认证" name="fourth">
 
-    <el-container>
-      <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <span>王小虎</span>
-      </el-header>
+        </el-tab-pane>
+      </el-tabs>
+    </el-main>
 
-      <el-main>
-        <el-table :data="tableData">
-          <el-table-column prop="date" label="日期" width="140">
-          </el-table-column>
-          <el-table-column prop="name" label="姓名" width="120">
-          </el-table-column>
-          <el-table-column prop="address" label="地址">
-          </el-table-column>
-        </el-table>
-      </el-main>
-    </el-container>
   </el-container>
 
 </template>
@@ -92,14 +67,71 @@
 <script>
 export default {
     data() {
-        const item = {
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄"
+        var validatePass = (rule, value, callback) => {
+            if (value === "") {
+                callback(new Error("请输入密码"));
+            } else {
+                if (this.ruleForm.checkPass !== "") {
+                    this.$refs.ruleForm.validateField("checkPass");
+                }
+                callback();
+            }
         };
+        let validatePass2 = (rule, value, callback) => {
+            if (value === "") {
+                callback(new Error("请再次输入密码"));
+            } else if (value !== this.ruleForm.pass) {
+                callback(new Error("两次输入密码不一致!"));
+            } else {
+                callback();
+            }
+        };
+
         return {
-            tableData: Array(20).fill(item)
+            activeName: "first",
+            fileList: [
+                {
+                    name: "food.jpeg",
+                    url:
+                        "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+                },
+                {
+                    name: "food2.jpeg",
+                    url:
+                        "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+                }
+            ],
+            ruleForm: {
+                pass: "",
+                checkPass: ""
+            },
+            rules: {
+                pass: [{ validator: validatePass, trigger: "blur" }],
+                checkPass: [{ validator: validatePass2, trigger: "blur" }]
+            }
         };
+    },
+    methods: {
+        handleClick() {},
+        submitForm(formName) {
+            this.$refs[formName].validate(valid => {
+                if (valid) {
+                    alert("submit!");
+                } else {
+                    console.log("error submit!!");
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        }
     }
 };
 </script>
